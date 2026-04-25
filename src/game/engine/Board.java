@@ -56,17 +56,28 @@ public class Board {
 	}
 	
 	public void initializeBoard(ArrayList<Cell> specialCells) {
-		int odd = 1, conveyor = 0, sock = 0;
+		int i = 1, conveyor = 0, sock = 0;
 		for (Cell currentCell : specialCells) {
 			if (currentCell instanceof DoorCell) {
-				setCell(odd, currentCell);
-				odd += 2;
+				setCell(i, currentCell);
+				i += 2;
 			}
 			else if (currentCell instanceof ConveyorBelt)
 				setCell(Constants.CONVEYOR_CELL_INDICES[conveyor++], currentCell);
 			else if (currentCell instanceof ContaminationSock)
 				setCell(Constants.SOCK_CELL_INDICES[sock++], currentCell);
 		}
+		for (i = 0; i < Constants.CARD_CELL_INDICES.length; i++)
+			setCell(Constants.CARD_CELL_INDICES[i], new CardCell("Card cell"));
+		i = 0;
+		for (Monster currentMonster : stationedMonsters) {
+			currentMonster.setPosition(Constants.MONSTER_CELL_INDICES[i]);
+			setCell(Constants.MONSTER_CELL_INDICES[i++], new MonsterCell(currentMonster.getName(), currentMonster));
+		}
+		for (Cell[] currentRow : boardCells)
+			for (Cell currentCell : currentRow)
+				if (currentCell == null)
+					currentCell = new Cell("Normal cell");
 	}
 	private void setCardsByRarity() {
 		ArrayList<Card> expandedCards = new ArrayList<Card>();
