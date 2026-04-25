@@ -1,9 +1,9 @@
 package game.engine.dataloader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 import game.engine.exceptions.InvalidCSVFormat;
 import game.engine.Role;
@@ -69,7 +69,6 @@ public class DataLoader {
 		while (br.ready()) {
 			String nextLine = br.readLine();
 			String[] data = nextLine.split(",");
-			
 
 			if (data.length != 2 && data.length != 3)
 				throw new InvalidCSVFormat(nextLine);

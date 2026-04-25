@@ -1,5 +1,3 @@
 package game.engine;
 
-public enum Role {
-	SCARER, LAUGHER
-}
+public enum Role { SCARER, LAUGHER }

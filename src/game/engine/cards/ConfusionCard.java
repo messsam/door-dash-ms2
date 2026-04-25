@@ -1,5 +1,7 @@
 package game.engine.cards;
 
+import game.engine.monsters.Monster;
+
 public class ConfusionCard extends Card {
 	private int duration;
 	
@@ -8,8 +10,10 @@ public class ConfusionCard extends Card {
 		this.duration = duration;
 	}
 	
-	public int getDuration() {
-		return duration;
+	public int getDuration() { return duration; }
+	
+	@Override
+	public void performAction(Monster player, Monster opponent) {
+		
 	}
-
 }

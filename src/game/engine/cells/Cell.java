@@ -10,17 +10,12 @@ public class Cell {
 		this.name = name;
 		this.monster = null;
 	}
-
-	public String getName() {
-		return name;
-	}
 	
-	public Monster getMonster() {
-		return monster;
+	public String getName() { return name; }
+	public Monster getMonster() { return monster; }
+	public void setMonster(Monster monster) { this.monster = monster; }
+	public boolean isOccupied() { return monster != null; }
+	public void onLand(Monster landingMonster, Monster opponentMonster) {
+		
 	}
-
-	public void setMonster(Monster monster) {
-		this.monster = monster;
-	}
-
 }
