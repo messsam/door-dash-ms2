@@ -30,17 +30,17 @@ public class Board {
 	public static void setCards(ArrayList<Card> cards) { Board.cards = cards; }
 	
 	public static ArrayList<Monster> getStationedMonsters() { return stationedMonsters; }
-	public static void setStationedMonsters(ArrayList<Monster> stationedMonsters) { Board.stationedMonsters = stationedMonsters; }
+	public static void setStationedMonsters(ArrayList<Monster> stationedMonsters) {
+		Board.stationedMonsters = stationedMonsters;
+	}
 	
 	private int[] indexToRowCol(int index) {
 		int[] rowCol = new int[2];
-		if (index < 10) {
-			rowCol[0] = 9;
+		if (index < 10)
 			rowCol[1] = index;
-		}
 		else {
 			int major = index / 10, minor = index % 10;
-			rowCol[0] = Math.abs(major - 9);
+			rowCol[0] = major;
 			rowCol[1] = major % 2 == 0? minor: Math.abs(minor - 9);
 		}
 		return rowCol;
@@ -54,15 +54,18 @@ public class Board {
 		int[] rowCol = indexToRowCol(index);
 		boardCells[rowCol[0]][rowCol[1]] = cell;
 	}
+	
 	public void initializeBoard(ArrayList<Cell> specialCells) {
-		int odd = 1;
-		for (Cell cell : specialCells) {
-			if (odd == 101) break;
-			setCell(odd, cell);
-			odd += 2;
-		}
-		for (int i = 50; i < specialCells.size(); i++) {
-			
+		int odd = 1, conveyor = 0, sock = 0;
+		for (Cell currentCell : specialCells) {
+			if (currentCell instanceof DoorCell) {
+				setCell(odd, currentCell);
+				odd += 2;
+			}
+			else if (currentCell instanceof ConveyorBelt)
+				setCell(Constants.CONVEYOR_CELL_INDICES[conveyor++], currentCell);
+			else if (currentCell instanceof ContaminationSock)
+				setCell(Constants.SOCK_CELL_INDICES[sock++], currentCell);
 		}
 	}
 	private void setCardsByRarity() {
@@ -98,6 +101,12 @@ public class Board {
 		updateMonsterPositions(currentMonster, opponentMonster);
 	}
 	private void updateMonsterPositions(Monster player, Monster opponent) {
-		
+		for (int i = 0; i < Constants.BOARD_SIZE; i++) {
+			Cell currentCell = getCell(i);
+			if (currentCell.isOccupied())
+				currentCell.setMonster(null);
+		}
+		getCell(player.getPosition()).setMonster(player);
+		getCell(opponent.getPosition()).setMonster(opponent);
 	}
 }
