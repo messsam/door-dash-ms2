@@ -36,8 +36,7 @@ public class Board {
 	
 	private int[] indexToRowCol(int index) {
 		int[] rowCol = new int[2];
-		if (index < 10)
-			rowCol[1] = index;
+		if (index < 10) rowCol[1] = index;
 		else {
 			int major = index / 10, minor = index % 10;
 			rowCol[0] = major;
@@ -56,29 +55,31 @@ public class Board {
 	}
 	
 	public void initializeBoard(ArrayList<Cell> specialCells) {
-		int i = 1, conveyor = 0, sock = 0;
+		int idx = 1, conveyorIdx = 0, sockIdx = 0;
 		for (Cell currentCell : specialCells) {
 			if (currentCell instanceof DoorCell) {
-				setCell(i, currentCell);
-				i += 2;
+				setCell(idx, currentCell);
+				idx += 2;
 			}
 			else if (currentCell instanceof ConveyorBelt)
-				setCell(Constants.CONVEYOR_CELL_INDICES[conveyor++], currentCell);
+				setCell(Constants.CONVEYOR_CELL_INDICES[conveyorIdx++], currentCell);
 			else if (currentCell instanceof ContaminationSock)
-				setCell(Constants.SOCK_CELL_INDICES[sock++], currentCell);
+				setCell(Constants.SOCK_CELL_INDICES[sockIdx++], currentCell);
 		}
-		for (i = 0; i < Constants.CARD_CELL_INDICES.length; i++)
-			setCell(Constants.CARD_CELL_INDICES[i], new CardCell("Card cell"));
-		i = 0;
+		for (int i : Constants.CARD_CELL_INDICES)
+			setCell(i, new CardCell("Card cell"));
+		idx = 0;
 		for (Monster currentMonster : stationedMonsters) {
-			currentMonster.setPosition(Constants.MONSTER_CELL_INDICES[i]);
-			setCell(Constants.MONSTER_CELL_INDICES[i++], new MonsterCell(currentMonster.getName(), currentMonster));
+			int monsterPosition = Constants.MONSTER_CELL_INDICES[idx++];
+			currentMonster.setPosition(monsterPosition);
+			setCell(monsterPosition, new MonsterCell(currentMonster.getName()+"'s cell", currentMonster));
 		}
-		for (Cell[] currentRow : boardCells)
-			for (Cell currentCell : currentRow)
-				if (currentCell == null)
-					currentCell = new Cell("Normal cell");
+		for (int row = 0; row < Constants.BOARD_ROWS; row++)
+			for (int col = 0; col < Constants.BOARD_COLS; col++)
+				if (boardCells[row][col] == null)
+					boardCells[row][col] = new Cell("Normal cell");
 	}
+	
 	private void setCardsByRarity() {
 		ArrayList<Card> expandedCards = new ArrayList<Card>();
 		for (Card card : originalCards) {
