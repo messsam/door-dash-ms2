@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import game.engine.dataloader.DataLoader;
+import game.engine.exceptions.InvalidMoveException;
+import game.engine.exceptions.OutOfEnergyException;
 import game.engine.monsters.*;
 
 public class Game {
@@ -22,6 +24,15 @@ public class Game {
 		this.player = selectRandomMonsterByRole(playerRole);
 		this.opponent = selectRandomMonsterByRole(playerRole == Role.SCARER ? Role.LAUGHER : Role.SCARER);
 		this.current = player;
+		ArrayList<Monster> remainingMonsters = new ArrayList<>(this.allMonsters);
+        
+        remainingMonsters.remove(this.player);
+        remainingMonsters.remove(this.opponent);
+        
+        Board.setStationedMonsters(remainingMonsters);
+        
+        
+        this.board.initializeBoard(DataLoader.readCells());
 	}
 	
 	public Board getBoard() {
@@ -55,5 +66,60 @@ public class Game {
 	    		.findFirst()
 	    		.orElse(null);
 	}
+
+	 private Monster getCurrentOpponent(){
+		if(current==player){
+			return opponent;}
+		else{
+			return player;
+		}		
+	 }
+
+	 private int rollDice(){
+		int random = (int) (Math.random()*6)+1;
+		return random;
+	 }
+
+	 void usePowerup() throws OutOfEnergyException{
+		if(current.getEnergy()<Constants.POWERUP_COST){
+			throw new OutOfEnergyException("Insufficient Energy");
+		}
+		else{
+			current.executePowerupEffect(getCurrentOpponent());
+		}
+	 }
 	
+	 void playTurn() throws InvalidMoveException{
+		if(current.isFrozen()){
+			current.setFrozen(false);
+
+		}
+		else{
+			board.moveMonster(current, rollDice(), getCurrentOpponent());
+		}
+		switchTurn();
+	 }
+
+	 private void switchTurn(){
+		current = getCurrentOpponent();
+	 }
+
+	 private boolean checkWinCondition(Monster monster){
+		if(monster.getEnergy()>=1000 && monster.getPosition()==99){
+			return true;
+		}
+		return false;
+	 }
+
+	 Monster getWinner(){
+		if(checkWinCondition(player)){
+			return player;
+		}
+		if(checkWinCondition(opponent)){
+			return opponent;
+		}
+		else{
+			return null;
+		}
+	 }
 }
