@@ -1,6 +1,6 @@
 package game.engine;
 
-import static java.util.Collections.shuffle;
+import java.util.Collections;
 import java.util.ArrayList;
 
 import game.engine.cells.*;
@@ -15,10 +15,10 @@ public class Board {
 	public static ArrayList<Card> cards;
 	
 	public Board(ArrayList<Card> readCards) {
-		boardCells = new Cell[Constants.BOARD_ROWS][Constants.BOARD_COLS];
-		stationedMonsters = new ArrayList<Monster>();
-		cards = new ArrayList<Card>();
-		originalCards = readCards;
+		this.boardCells = new Cell[Constants.BOARD_ROWS][Constants.BOARD_COLS];
+		this.stationedMonsters = new ArrayList<Monster>();
+		this.cards = new ArrayList<Card>();
+		this.originalCards = readCards;
 		setCardsByRarity();
 		reloadCards();
 	}
@@ -72,7 +72,7 @@ public class Board {
 		for (Monster currentMonster : stationedMonsters) {
 			int monsterPosition = Constants.MONSTER_CELL_INDICES[idx++];
 			currentMonster.setPosition(monsterPosition);
-			setCell(monsterPosition, new MonsterCell(currentMonster.getName()+"'s cell", currentMonster));
+			setCell(monsterPosition, new MonsterCell(currentMonster.getName(), currentMonster));
 		}
 		for (int row = 0; row < Constants.BOARD_ROWS; row++)
 			for (int col = 0; col < Constants.BOARD_COLS; col++)
@@ -93,7 +93,7 @@ public class Board {
 	public static void reloadCards() {
 		for (Card card : originalCards)
 			cards.add(card);
-		shuffle(cards);
+		Collections.shuffle(cards);
 	}
 	public static Card drawCard() {
 		if (cards.isEmpty()) reloadCards();
