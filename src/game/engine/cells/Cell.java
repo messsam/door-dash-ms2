@@ -7,15 +7,17 @@ public class Cell {
 	private Monster monster; 
 	
 	public Cell(String name) {
-		this.name = name;
-		this.monster = null;
+		this.name = name; // monster is set to null by default.
 	}
 	
 	public String getName() { return name; }
+	
 	public Monster getMonster() { return monster; }
 	public void setMonster(Monster monster) { this.monster = monster; }
+	
 	public boolean isOccupied() { return monster != null; }
+	
 	public void onLand(Monster landingMonster, Monster opponentMonster) {
-		
+		this.monster = landingMonster;
 	}
 }

@@ -1,5 +1,6 @@
 package game.engine.cells;
 
+import game.engine.Constants;
 import game.engine.monsters.Monster;
 import game.engine.interfaces.CanisterModifier;
 
@@ -10,6 +11,12 @@ public class ContaminationSock extends TransportCell implements CanisterModifier
 
 	@Override
 	public void modifyCanisterEnergy(Monster monster, int canisterValue) {
-		
+		monster.alterEnergy(canisterValue);
+	}
+	
+	@Override
+	public void onLand(Monster landingMonster, Monster opponentMonster) {
+		super.onLand(landingMonster,  opponentMonster);
+		modifyCanisterEnergy(landingMonster, Constants.SLIP_PENALTY);
 	}
 }
