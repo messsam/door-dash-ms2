@@ -12,7 +12,6 @@ public class CardCell extends Cell {
 	@Override
 	public void onLand(Monster landingMonster, Monster opponentMonster) {
 		super.onLand(landingMonster, opponentMonster);
-		Card drawnCard = Board.drawCard();
-		drawnCard.performAction(landingMonster, opponentMonster);
+		Board.drawCard().performAction(landingMonster, opponentMonster);
 	}
 }
