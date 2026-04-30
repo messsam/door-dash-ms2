@@ -30,45 +30,39 @@ public class DoorCell extends Cell implements CanisterModifier {
 	@Override
 	public void onLand(Monster landingMonster, Monster opponentMonster) {
 		super.onLand(landingMonster, opponentMonster);
-		if(this.isActivated()==true){
-			return;
+		if (this.isActivated() == true) return;
+		boolean flag = false;
+		int energyFirst = 0;
+		int energyEnd = 0;
+		if (this.getRole() == landingMonster.getRole()) {
+			energyFirst = landingMonster.getEnergy();
+			modifyCanisterEnergy(landingMonster, this.getEnergy());
+			energyEnd = landingMonster.getEnergy();
+			if (energyFirst != energyEnd) flag = true;
 		}
-		else{
-			boolean flag=false;
-			int energyFirst=0;
-			int energyEnd=0;
-			if(this.getRole()==landingMonster.getRole()){
-				energyFirst=landingMonster.getEnergy();
-				this.modifyCanisterEnergy(landingMonster,this.getEnergy());
-				energyEnd=landingMonster.getEnergy();
-				if(energyFirst!=energyEnd){flag=true;}
-			}
-			else if(this.getRole()!=landingMonster.getRole()){
-				energyFirst=landingMonster.getEnergy();
-				this.modifyCanisterEnergy(landingMonster,-this.getEnergy());
-				energyEnd=landingMonster.getEnergy();
-				if(energyFirst!=energyEnd){flag=true;}
-			}
-			for(int i=0; i<Board.getStationedMonsters().size();i++){
-				Monster stationed=Board.getStationedMonsters().get(i);
-				if(stationed.getRole()==landingMonster.getRole()){
-					if(this.getRole()==stationed.getRole()){
-						energyFirst=stationed.getEnergy();
-						this.modifyCanisterEnergy(stationed,this.getEnergy());
-						energyEnd=stationed.getEnergy();
-						if(energyFirst!=energyEnd){flag=true;}
-					}
-					else if(this.getRole()!=stationed.getRole()){
-						energyFirst=stationed.getEnergy();
-						this.modifyCanisterEnergy(stationed,-this.getEnergy());
-						energyEnd=stationed.getEnergy();
-						if(energyFirst!=energyEnd){flag=true;}
-					}
+		else if (this.getRole() != landingMonster.getRole()) {
+			energyFirst = landingMonster.getEnergy();
+			this.modifyCanisterEnergy(landingMonster, -this.getEnergy());
+			energyEnd = landingMonster.getEnergy();
+			if (energyFirst != energyEnd) flag = true;
+		}
+		for (int i=0; i < Board.getStationedMonsters().size(); i++){
+			Monster stationed = Board.getStationedMonsters().get(i);
+			if (stationed.getRole() == landingMonster.getRole()) {
+				if (this.getRole() == stationed.getRole()) {
+					energyFirst = stationed.getEnergy();
+					this.modifyCanisterEnergy(stationed, this.getEnergy());
+					energyEnd = stationed.getEnergy();
+					if (energyFirst != energyEnd) flag=true;
+				}
+				else if (this.getRole() != stationed.getRole()) {
+					energyFirst = stationed.getEnergy();
+					this.modifyCanisterEnergy(stationed, -this.getEnergy());
+					energyEnd = stationed.getEnergy();
+					if (energyFirst != energyEnd) flag=true;
 				}
 			}
-			if(flag==true){
-				this.setActivated(true);
-			}
 		}
+		this.setActivated(flag);
 	}
 }
