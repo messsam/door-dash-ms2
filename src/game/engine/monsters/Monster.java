@@ -47,7 +47,7 @@ public abstract class Monster implements Comparable<Monster> {
 	public boolean isConfused() { return confusionTurns != 0; }
 	
 	public void move(int distance) {
-		setPosition(this.position + distance);
+		this.setPosition(this.getPosition() + distance);
 	}
 	
 	public final void alterEnergy(int energy) {
