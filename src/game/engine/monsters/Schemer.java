@@ -8,7 +8,7 @@ public class Schemer extends Monster {
 		super(name, description, role, energy);
 	}
 
-	private int stealEnergyFrom(Monster target){
+	private int stealEnergyFrom(Monster target) {
 		if (target.getEnergy() >= Constants.SCHEMER_STEAL) {
 			target.setEnergy(target.getEnergy() - Constants.SCHEMER_STEAL);
 			return Constants.SCHEMER_STEAL;
@@ -19,8 +19,9 @@ public class Schemer extends Monster {
 			return stolen;
 		}
 	}
+	
 	@Override
-	public void setEnergy(int energy){
+	public void setEnergy(int energy) {
 		int change = energy - this.getEnergy();
         super.setEnergy(this.getEnergy() + change + 10);
 	}

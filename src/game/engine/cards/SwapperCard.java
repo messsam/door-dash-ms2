@@ -9,7 +9,7 @@ public class SwapperCard extends Card {
 	
 	@Override
 	public void performAction(Monster player, Monster opponent) {
-		if(player.getPosition() < opponent.getPosition()) {
+		if (player.getPosition() < opponent.getPosition()) {
 			int temp = opponent.getPosition();
 			opponent.setPosition(player.getPosition());
 			player.setPosition(temp);

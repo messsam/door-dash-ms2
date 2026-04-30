@@ -19,20 +19,17 @@ public class DataLoader {
 	@SuppressWarnings("resource")
 	public static ArrayList<Card> readCards() throws IOException {
 		ArrayList<Card> cards = new ArrayList<Card>();
-
 		BufferedReader br = new BufferedReader(new FileReader(CARDS_FILE_NAME));
 
 		while (br.ready()) {
 			String nextLine = br.readLine();
 			String[] data = nextLine.split(",");
 			
-
 			if (data.length != 4 && data.length != 5) {
 				System.out.println(data.length);
 				throw new InvalidCSVFormat(nextLine);
 			}
 				
-			
 			String cardType = data[0];
 			Card card;
 			
@@ -50,13 +47,9 @@ public class DataLoader {
 			default:
 				throw new InvalidCSVFormat("Unknown card type: " + cardType);
 			}
-			
-			cards.add(card);
-			
+			cards.add(card);	
 		}
-
 		br.close();
-
 		return cards;
 	}
 	
@@ -77,7 +70,6 @@ public class DataLoader {
 			
 			if (data.length == 2) 
 				cell = Integer.parseInt(data[1]) > 0 ? new ConveyorBelt(data[0], Integer.parseInt(data[1])) : new ContaminationSock(data[0], Integer.parseInt(data[1]));
-				
 			else 
 				cell = new DoorCell(data[0], Role.valueOf(data[1]), Integer.parseInt(data[2]));
 			
@@ -92,14 +84,12 @@ public class DataLoader {
 	@SuppressWarnings("resource")
 	public static ArrayList<Monster> readMonsters() throws IOException {
 		ArrayList<Monster> monsters = new ArrayList<Monster>();
-
 		BufferedReader br = new BufferedReader(new FileReader(MONSTERS_FILE_NAME));
 
 		while (br.ready()) {
 			String nextLine = br.readLine();
 			String[] data = nextLine.split(",");
-			
-
+		    
 			if (data.length != 5)
 				throw new InvalidCSVFormat(nextLine);
 			
@@ -118,13 +108,9 @@ public class DataLoader {
 			default:
 				throw new InvalidCSVFormat("Unknown monster type: " + monsterType);
 			}
-			
 			monsters.add(monster);
-			
 		}
-
 		br.close();
-
 		return monsters;
 	}
 	
