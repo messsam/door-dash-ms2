@@ -22,9 +22,12 @@ public class DoorCell extends Cell implements CanisterModifier {
 	public boolean isActivated() { return activated; }
 	public void setActivated(boolean activated) { this.activated = activated; }
 
-	@Override
 	public void modifyCanisterEnergy(Monster monster, int canisterValue) {
-		monster.alterEnergy(canisterValue);
+		if (monster.isShielded()==true && canisterValue < 0){ 
+			monster.setShielded(false);}
+		else {
+			monster.setEnergy(monster.getEnergy()+canisterValue);
+		}
 	}
 	
 	@Override
@@ -39,13 +42,13 @@ public class DoorCell extends Cell implements CanisterModifier {
 			int energyEnd=0;
 			if(this.getRole()==landingMonster.getRole()){
 				energyFirst=landingMonster.getEnergy();
-				this.modifyCanisterEnergy(landingMonster,this.getEnergy());
+				modifyCanisterEnergy(landingMonster,this.getEnergy());
 				energyEnd=landingMonster.getEnergy();
 				if(energyFirst!=energyEnd){flag=true;}
 			}
 			else if(this.getRole()!=landingMonster.getRole()){
 				energyFirst=landingMonster.getEnergy();
-				this.modifyCanisterEnergy(landingMonster,-this.getEnergy());
+				modifyCanisterEnergy(landingMonster,-1 * this.getEnergy());
 				energyEnd=landingMonster.getEnergy();
 				if(energyFirst!=energyEnd){flag=true;}
 			}
@@ -54,13 +57,13 @@ public class DoorCell extends Cell implements CanisterModifier {
 				if(stationed.getRole()==landingMonster.getRole()){
 					if(this.getRole()==stationed.getRole()){
 						energyFirst=stationed.getEnergy();
-						this.modifyCanisterEnergy(stationed,this.getEnergy());
+						modifyCanisterEnergy(stationed,this.getEnergy());
 						energyEnd=stationed.getEnergy();
 						if(energyFirst!=energyEnd){flag=true;}
 					}
 					else if(this.getRole()!=stationed.getRole()){
 						energyFirst=stationed.getEnergy();
-						this.modifyCanisterEnergy(stationed,-this.getEnergy());
+						modifyCanisterEnergy(stationed,-1 * this.getEnergy());
 						energyEnd=stationed.getEnergy();
 						if(energyFirst!=energyEnd){flag=true;}
 					}
