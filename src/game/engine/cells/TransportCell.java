@@ -13,12 +13,11 @@ public abstract class TransportCell extends Cell {
 	public int getEffect() { return effect; }
 	
 	public void transport(Monster monster) {
-		monster.move(effect);
+		monster.move(this.getEffect());
+	}
+	public void onLand(Monster landingMonster, Monster opponentMonster) {
+		super.onLand(landingMonster, opponentMonster);;
+		this.transport(landingMonster);
 	}
 	
-	@Override
-	public void onLand(Monster landingMonster, Monster opponentMonster) {
-		super.onLand(landingMonster, opponentMonster);
-		transport(landingMonster);
-	}
 }
