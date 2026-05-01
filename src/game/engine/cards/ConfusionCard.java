@@ -14,10 +14,10 @@ public class ConfusionCard extends Card {
 	
 	@Override
 	public void performAction(Monster player, Monster opponent) {
-		Role r1 = player.getRole();
-		Role r2 = opponent.getRole();
-		player.setRole(r2);
-		opponent.setRole(r1);
+		Role playerRole = player.getRole();
+		Role opponentRole = opponent.getRole();
+		player.setRole(opponentRole);
+		opponent.setRole(playerRole);
 		player.setConfusionTurns(getDuration());
 		opponent.setConfusionTurns(getDuration());
 	}

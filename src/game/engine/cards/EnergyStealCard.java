@@ -23,7 +23,7 @@ public class EnergyStealCard extends Card implements CanisterModifier {
 		if (player instanceof Dasher || !opponent.isShielded()) {
 			int stolenEnergy = Math.min(getEnergy(),  opponent.getEnergy());
 			modifyCanisterEnergy(player, stolenEnergy);
-			modifyCanisterEnergy(opponent, -1 * stolenEnergy);
+			modifyCanisterEnergy(opponent, -stolenEnergy);
 		}
 		else opponent.setShielded(false);
 	}
